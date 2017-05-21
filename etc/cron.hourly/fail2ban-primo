@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "`date +%H`" -eq "00" ]; then
+    fail2ban-client status primo-EmailFilter >/dev/null
+    if [ "$?" -eq "0" ]; then
+        fail2ban-client get primo-EmailFilter logpath | awk '/\.txt$/ { print "fail2ban-client set primo-EmailFilter dellogpath",$2}' | sh >/dev/null
+        fail2ban-client set primo-EmailFilter addlogpath /exlibris/primo/p4_1/ng/primo/home/profile/search/log/localhost_access_log.`date +%Y-%m-%d`.txt >/dev/null
+    fi
+fi
